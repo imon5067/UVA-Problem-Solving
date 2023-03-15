@@ -1,0 +1,156 @@
+Solution : C
+
+#include <stdio.h>
+#include <string.h>
+
+int main ()
+{
+    long np, i, money, person, divide, c, flag = 0;
+    char giver [20], receiver [20];
+
+    while (scanf ("%ld", &np) != EOF) {
+
+        struct friends {
+            int spend;
+            int receive;
+            char name [20];
+        } A [12] = {0, 0, 0};
+
+        for (i = 0; i < np; i++)
+        scanf ("%s", A [i].name);
+
+        for (c = 0; c < np; c++ ) {
+
+            scanf ("%s", giver);
+            scanf ("%ld", &money);
+
+            i = 0;
+            while (strcmp (A [i].name, giver) != 0)
+                i++;
+            A [i].spend += money;
+
+            scanf ("%ld", &person);
+            if (person == 0) {
+                A [i].receive += money;
+                continue;
+            }
+
+            divide = person;
+            A [i].receive += money - ((money / person) * person);
+            while (person--) {
+                scanf ("%s", receiver);
+                i = 0;
+                while (strcmp (A [i].name, receiver) != 0)
+                    i++;
+                A [i].receive += (money / divide);
+            }
+        }
+
+        if (flag == 1)
+            printf("\n");
+        flag = 1;
+
+        for (i = 0; i < np; i++)
+            printf("%s %ld\n", A [i].name, A [i].receive - A [i].spend);
+    }
+    return 0;
+}
+
+
+
+Solve  : Java
+
+import java.util.Scanner;
+
+public class Main{
+
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        int counter=0;
+        while (true) {
+            int n = 0;
+            try {
+                n = s.nextInt();
+            } catch (Exception e) {
+                break;
+            }
+            s.nextLine();
+            String arr[] = s.nextLine().split(" ");
+            int numArr[] = new int[arr.length];
+            for (int i = 0; i < n; i++) {
+                String m = s.next();
+                int giver = search(arr, m);
+                int money = s.nextInt();
+                int num = s.nextInt();
+                if (num != 0) {
+                    int rem = money % num;
+                    int div = money / num;
+                    numArr[giver] += rem - money;
+                    for (int j = 0; j < num; j++) {
+                        m = s.next();
+                        int receiver = search(arr, m);
+                        numArr[receiver] += div;
+                    }
+                }
+            }
+            if(counter>0)
+                System.out.println();
+            for (int i = 0; i < n; i++) {
+                System.out.println(arr[i] + " " + numArr[i]);
+            }
+            counter++;
+        }
+    }
+
+    static int search(String[] arr, String m) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i].equals(m)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+
+
+
+
+
+Solve : C ++
+
+#include<iostream>
+#include<map>
+#include<string>
+#include<vector>
+
+using namespace std;
+int main(){
+    freopen("in.txt","r",stdin);
+    freopen("out.txt","w",stdout);
+    int n,cant,amigos;
+
+    string s1,s2;
+    vector<string> v;
+    cin>>n;
+    while(1){
+        map<string, int> M;
+        v.clear();
+        for(int i=0;i<n;i++){
+            cin>>s1;
+            v.push_back(s1);
+        }
+        for(int i=0;i<n;i++){
+            cin>>s1>>cant>>amigos;
+            if(amigos!=0) M[s1]-=amigos*(cant/amigos);
+            for(int j=0;j<amigos;j++){
+                cin>>s2;
+                M[s2]+=cant/amigos;
+            }
+        }
+        for(int i=0;i<n;i++)
+           cout<<v[i]<<" "<<M[v[i]]<<endl;
+
+        if(cin>>n) cout<<endl;
+        else break;
+    }
+}
